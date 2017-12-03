@@ -201,51 +201,16 @@ public class PizzaApplication
     }while(true);
   }
   
-  
-//  private static boolean validateFile(File userFile) throws IOException
+//  private static boolean checkForUser(File userFile) throws FileNotFoundException, IOException
 //  {
-//    boolean valid = false;
-//    boolean fileExists = checkFileExistence(userFile);
+//    boolean userFound = false;
+//    BufferedReader reader = new BufferedReader(new FileReader(userFile));  
 //    
-//    if(fileExists)
-//    {
-//      boolean userInFile = checkForUser(userFile);
-//      if (userInFile)
-//        return true;      
-//    }
-//    else
-//      //Create the file if it does not exist 
-//      userFile.createNewFile();
-//    
-//    JOptionPane.showMessageDialog(null,"No users found\n\nPress OK to create a user account",
-//                                  "User file empty", JOptionPane.WARNING_MESSAGE);
-//    valid = promptForUserEntry(userFile);
-//    
-//    return valid;
-//  }
-//  
-//  private static boolean checkFileExistence(File userFile)
-//  {
-//    boolean exists = false;
-//    if(userFile.exists() && !userFile.isDirectory()) 
+//    if (reader.readLine() != null)
 //      return true;
 //    
-//    JOptionPane.showMessageDialog(null,"User file not found\n\nCreating file",
-//                                  "User file empty", JOptionPane.WARNING_MESSAGE);
-//    
-//    return exists;
+//    return userFound;       
 //  }
-  
-  private static boolean checkForUser(File userFile) throws FileNotFoundException, IOException
-  {
-    boolean userFound = false;
-    BufferedReader reader = new BufferedReader(new FileReader(userFile));  
-    
-    if (reader.readLine() != null)
-      return true;
-    
-    return userFound;       
-  }
   
   private static void promptForUserEntry(File userFile) throws FileNotFoundException
   {

@@ -1,12 +1,5 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -23,54 +16,90 @@ public class PizzaApplication
   {
     //Create a File object
     File userFile = new File(PizzaApplication.USER_FILE);
+    //Make sure it exists
+    if(! userFile.exists()){
+      userFile.createNewFile();
+    }
     
     //Validate the file
-    boolean validFile = validateFile(userFile);
-    boolean validLogin = false;
+//    boolean validFile = validateFile(userFile);
+//    boolean validLogin = false;
     
-    if(!validFile)
-      //Display file system error, terminate program
-      JOptionPane.showMessageDialog(null,
-                                    "File system error\n\nTerminating application",
-                                    "System Error", JOptionPane.ERROR_MESSAGE);
-    else
-    {
-      //Continue executing program
-      
-      validLogin = displayLogin(userFile);
-      if(validLogin)
-      {
-        promptForUserType();
-      }
-    }
+    initialMenu();
+    
+//    if(!validFile)
+//      //Display file system error, terminate program
+//      JOptionPane.showMessageDialog(null,
+//                                    "File system error\n\nTerminating application",
+//                                    "System Error", JOptionPane.ERROR_MESSAGE);
+//    else
+//    {
+//      //Continue executing program
+//      
+//      validLogin = displayLogin(userFile);
+//      if(validLogin)
+//      {
+//        promptForUserType();
+//      }
+//    }
     
     
   }
   
-  private static void promptForUserType()
-  {
-    String menu ="1- Customer\n2-Employee\n3-Driver\n4-Manager\n5-exit";
+  private static void initialMenu(){
+    String menu = "1- Login\n2-Create New Account\n3-Exit";
     int option = 0;
-    do{
-      option = Integer.parseInt(JOptionPane.showInputDialog(menu));
-      switch(option){
-        case 1:
-          displayCustomerMenu();
-          break;
-        case 2:
-          displayEmployeeMenu();
-          break;
-        case 3:
-          displayDriverMenu();
-          break;
-        case 4:
-          displayManagerMenu();
-          break;
-        case 5:
-          System.exit(0); 
-      }
-    }while(true);
+    option = Integer.parseInt(JOptionPane.showInputDialog(menu));
+    switch(option){
+      case 1:
+        displayLoginMenu();
+        break;
+      case 2:
+        //promptForUserEntry();
+        break;
+      case 3:
+        JOptionPane.showMessageDialog(null, "Have a Nice Day!");
+        System.exit(0);
+    }
   }
+  
+  private static void displayLoginMenu(){
+    
+  }
+    
+        
+        
+        
+  
+  
+  
+  
+  
+  //We don't prompt the user for that information, we already have it in  the file
+//  private static void promptForUserType()
+//  {
+//    String menu ="1- Customer\n2-Employee\n3-Driver\n4-Manager\n5-exit";
+//    int option = 0;
+//    do{
+//      option = Integer.parseInt(JOptionPane.showInputDialog(menu));
+//      switch(option){
+//        case 1:
+//          displayCustomerMenu();
+//          break;
+//        case 2:
+//          displayEmployeeMenu();
+//          break;
+//        case 3:
+//          displayDriverMenu();
+//          break;
+//        case 4:
+//          displayManagerMenu();
+//          break;
+//        case 5:
+//          System.exit(0); 
+//      }
+//    }while(true);
+//  }
   
   private static void displayCustomerMenu()
   {
@@ -93,7 +122,7 @@ public class PizzaApplication
           break;
         case 5:
           //TODO
-          promptForUserType();
+          initialMenu();
           //System.exit(0); 
       }
     }while(true);
@@ -122,7 +151,7 @@ public class PizzaApplication
           break;
         case 4:
           //TODO
-          promptForUserType();
+          initialMenu();
           //System.exit(0); 
           
       }
@@ -154,7 +183,7 @@ public class PizzaApplication
           
         case 6:
           //TODO
-          promptForUserType();
+          initialMenu();
           //System.exit(0); 
       }
     }while(true);
@@ -234,45 +263,39 @@ public class PizzaApplication
     return authenticated;
   }
   
-  private static boolean validateFile(File userFile) throws IOException
-  {
-    boolean valid = false;
-    boolean fileExists = checkFileExistence(userFile);
-    
-    if(fileExists)
-    {
-      boolean userInFile = checkForUser(userFile);
-      if (userInFile)
-        return true;      
-    }
-    else
-      //Create the file if it does not exist 
-      userFile.createNewFile();
-    
-    
-    JOptionPane.showMessageDialog(null,"No users found\n\nPress OK to create a user account",
-                                  "User file empty", JOptionPane.WARNING_MESSAGE);
-    
-    
-    
-    
-    valid = promptForUserEntry(userFile);
-    
-    
-    return valid;
-  }
-  
-  private static boolean checkFileExistence(File userFile)
-  {
-    boolean exists = false;
-    if(userFile.exists() && !userFile.isDirectory()) 
-      return true;
-    
-    JOptionPane.showMessageDialog(null,"User file not found\n\nCreating file",
-                                  "User file empty", JOptionPane.WARNING_MESSAGE);
-    
-    return exists;
-  }
+//  private static boolean validateFile(File userFile) throws IOException
+//  {
+//    boolean valid = false;
+//    boolean fileExists = checkFileExistence(userFile);
+//    
+//    if(fileExists)
+//    {
+//      boolean userInFile = checkForUser(userFile);
+//      if (userInFile)
+//        return true;      
+//    }
+//    else
+//      //Create the file if it does not exist 
+//      userFile.createNewFile();
+//    
+//    JOptionPane.showMessageDialog(null,"No users found\n\nPress OK to create a user account",
+//                                  "User file empty", JOptionPane.WARNING_MESSAGE);
+//    valid = promptForUserEntry(userFile);
+//    
+//    return valid;
+//  }
+//  
+//  private static boolean checkFileExistence(File userFile)
+//  {
+//    boolean exists = false;
+//    if(userFile.exists() && !userFile.isDirectory()) 
+//      return true;
+//    
+//    JOptionPane.showMessageDialog(null,"User file not found\n\nCreating file",
+//                                  "User file empty", JOptionPane.WARNING_MESSAGE);
+//    
+//    return exists;
+//  }
   
   private static boolean checkForUser(File userFile) throws FileNotFoundException, IOException
   {
@@ -289,14 +312,9 @@ public class PizzaApplication
   {
     //Still need to implement validation
     boolean successful = false;
+    String userInfo = "";
     
-    String accountType = (String) JOptionPane.showInputDialog(null, 
-                                                              "Choose an account type:",
-                                                              "Input",
-                                                              JOptionPane.QUESTION_MESSAGE, 
-                                                              null, 
-                                                              PizzaApplication.ACCOUNT_TYPES, 
-                                                              PizzaApplication.ACCOUNT_TYPES[0]);
+    String accountType = "1";
     String firstName = JOptionPane.showInputDialog(null,"First Name: ");
     String lastName = JOptionPane.showInputDialog(null,"Last Name: ");
     String phone = JOptionPane.showInputDialog(null,"Phone Number: ");
@@ -312,10 +330,12 @@ public class PizzaApplication
     
     String zip = JOptionPane.showInputDialog(null,"Zip Code: ");
     String email = JOptionPane.showInputDialog(null,"Email Address: ");
-    String password = getUserPassword();
+    //String password = getUserPassword();
+    String password = JOptionPane.showInputDialog(null, "Password:");
     
     successful = true;
     
+    //Really confused why you're making object here, they'd just be garbage collected
     if(successful)
     {
       if(accountType.equals(PizzaApplication.ACCOUNT_TYPES[0]))
@@ -343,90 +363,88 @@ public class PizzaApplication
         
       }
       
-      String[] userInfo = fillArray(accountType, firstName, lastName, streetAddress, 
-                                    city, state, zip,phone, email, password);
-      
-      writeToFile(userFile, userInfo); 
+      userInfo += accountType + ", " + firstName + ", " + lastName + ", " + streetAddress + ", " + city + ", " + state + ", " + zip + ", " + phone + ", " + email + ", " + password + "\n";
+//      writeToFile(userFile, userInfo); 
     }
     
     
     return successful;
   }
   
-  private static void writeToFile(File userFile, String[] userInfo)
-  {
-    PrintWriter writer = null; 
-    try {
-      writer = new PrintWriter(new FileOutputStream(userFile, true));
-      
-//                        for(String attribute : userInfo)
-//                        {
-//                            writer.append(attribute +",");
-//                        }
-      for(int i = 0; i < userInfo.length; i++)
-      {
-        if(i != userInfo.length-1)
-        {
-          //Changed to , for normal csv style file
-          writer.append(userInfo[i] + ",");
-        }
-        else
-        {
-          writer.append(userInfo[i] +"\n");
-        }
-        
-      }
-      //writer.append("\n"+content);
-      
-    } catch (FileNotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    writer.close();
-  }
+//  private static void writeToFile(File userFile, String[] userInfo)
+//  {
+//    PrintWriter writer = null; 
+//    try {
+//      writer = new PrintWriter(new FileOutputStream(userFile, true));
+//      
+////                        for(String attribute : userInfo)
+////                        {
+////                            writer.append(attribute +",");
+////                        }
+//      for(int i = 0; i < userInfo.length; i++)
+//      {
+//        if(i != userInfo.length-1)
+//        {
+//          //Changed to , for normal csv style file
+//          writer.append(userInfo[i] + ",");
+//        }
+//        else
+//        {
+//          writer.append(userInfo[i] +"\n");
+//        }
+//        
+//      }
+//      //writer.append("\n"+content);
+//      
+//    } catch (FileNotFoundException e) {
+//      // TODO Auto-generated catch block
+//      e.printStackTrace();
+//    }
+//    writer.close();
+//  }
+//  
+//  private static String[] fillArray(String accountType, 
+//                                    String firstName, String lastName, String streetAddress, 
+//                                    String city, String state, String zip, String phone, String email, String password)
+//  {
+//    String[] userInfo = new String[9];
+//    userInfo[0] = accountType;
+//    userInfo[1] = firstName;
+//    userInfo[2] = lastName;
+//    userInfo[3] = streetAddress;
+//    userInfo[4] = city;
+//    userInfo[5] = state;
+//    userInfo[6] = zip;
+//    userInfo[7] = email;
+//    userInfo[8] = password;
+//    
+//    return userInfo;
+//  }
+//  
   
-  private static String[] fillArray(String accountType, 
-                                    String firstName, String lastName, String streetAddress, 
-                                    String city, String state, String zip, String phone, String email, String password)
-  {
-    String[] userInfo = new String[9];
-    userInfo[0] = accountType;
-    userInfo[1] = firstName;
-    userInfo[2] = lastName;
-    userInfo[3] = streetAddress;
-    userInfo[4] = city;
-    userInfo[5] = state;
-    userInfo[6] = zip;
-    userInfo[7] = email;
-    userInfo[8] = password;
-    
-    return userInfo;
-  }
   
-  
-  
-  private static String getUserPassword()
-  {
-    
-    JPanel panel = new JPanel();
-    JLabel label = new JLabel("Enter a password:");
-    char[] password=null;
-    JPasswordField pass = new JPasswordField(10);
-    panel.add(label);
-    panel.add(pass);
-    String[] options = new String[]{"OK", "Cancel"};
-    int option = JOptionPane.showOptionDialog(null, panel, "Enter Password",
-                                              JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
-                                              null, options, options[1]);
-    if(option == 0) // pressing OK button
-    {
-      //Where is this saved?
-      password = pass.getPassword();
-      //System.out.println("Your password is: " + new String(password));
-    }
-    
-    return new String(password);
-  }
+//  private static String getUserPassword()
+//  {
+//    
+//    JPanel panel = new JPanel();
+//    JLabel label = new JLabel("Enter a password:");
+//    char[] password=null;
+//    JPasswordField pass = new JPasswordField(10);
+//    panel.add(label);
+//    panel.add(pass);
+//    String[] options = new String[]{"OK", "Cancel"};
+//    int option = JOptionPane.showOptionDialog(null, panel, "Enter Password",
+//                                              JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+//                                              null, options, options[1]);
+//    if(option == 0) // pressing OK button
+//    {
+//      //Where is this saved?
+//      password = pass.getPassword();
+//      //System.out.println("Your password is: " + new String(password));
+//    }
+//    
+//    return new String(password);
+//  }
   
   
 }

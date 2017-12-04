@@ -115,7 +115,7 @@ public class PizzaApplication
     return authenticatedUserType;
   }
   
-  private static void displayCustomerMenu()
+  private static void displayCustomerMenu() throws Exception
   {
     String menu ="1- New Order\n2- Check My Orders\n3- Recent Orders\n4- My Profile\n5- Logout";
     int option = 0;
@@ -123,7 +123,7 @@ public class PizzaApplication
       option = Integer.parseInt(JOptionPane.showInputDialog(menu));
       switch(option){
         case 1:
-          //TODO
+          makeOrder();
           break;
         case 2:
           //TODO
@@ -147,7 +147,7 @@ public class PizzaApplication
     //Employee should be an abstract class. Will implement and remove
   }
   
-  private static void displayDriverMenu()
+  private static void displayDriverMenu() throws Exception
   {
     String menu ="1- New Order\n2- Deliveries\n3- My Delivery History\n4- Logout";
     int option = 0;
@@ -155,7 +155,7 @@ public class PizzaApplication
       option = Integer.parseInt(JOptionPane.showInputDialog(menu));
       switch(option){
         case 1:
-          //TODO
+          makeOrder();
           break;
         case 2:
           //TODO
@@ -179,7 +179,7 @@ public class PizzaApplication
       option = Integer.parseInt(JOptionPane.showInputDialog(menu));
       switch(option){
         case 1:
-          //TODO
+          makeOrder();
           break;
         case 2:
           //TODO
@@ -250,14 +250,19 @@ public class PizzaApplication
     
     String zip = JOptionPane.showInputDialog(null,"Zip Code: ");
     String email = JOptionPane.showInputDialog(null,"Email Address: ");
-    //String password = getUserPassword();
     String password = JOptionPane.showInputDialog(null, "Password:");
-    
     
     userInfo += accountType + "," + firstName + "," + lastName + "," + streetAddress + "," + city + "," + state + "," + zip + "," + phone + "," + email + "," + password + ",\n";
     writeToFile(userFile, userInfo);
     
     displayManagerMenu(userFile);
+  }
+  
+  private static void makeOrder() throws Exception{
+    int numPizza = Integer.parseInt(JOptionPane.showInputDialog(null, "How many pizzas will you be ordering?"));
+    Order order = new Order(numPizza);
+    if(order.saveOrder())
+      JOptionPane.showMessageDialog(null, "Order Placed");
   }
   
   

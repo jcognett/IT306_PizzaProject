@@ -19,10 +19,10 @@ public class Pizza
   private String sauce;
   private String[] toppings;
  
-  public static final String[] SIZES = {"Kids","Small","Medium","Large","Party"};
-  public static final String[] CRUSTS = {"Thin", "Deep-Dish", "Regular"};
-  public static final String[] SAUCES = {"White", "Tomato","Rosemary Tomato"};
-  public static final String[] TOPPINGS = {"Pepperoni", "Onions", "Mushrooms", "Pineapple", "Ham","Olives","Bell Peppers", "Feta"};
+  public static final String[] SIZES = {"Kids​,​ ​Small,​ ​Medium,​ ​Large,​ ​Party​"};
+  public static final String[] CRUSTS = {"Thin,​ ​Deep​ ​Dish,​ ​Regular"};
+  public static final String[] SAUCES = {"White​,​ ​Tomato​,​ ​Rosemary Tomato​"};
+  public static final String[] TOPPINGS = {"Pepperoni,​ ​Onions,​ ​Mushrooms,​ ​Pineapple,​ ​Ham,​ ​Olives,​ ​Bell Peppers,​ ​Feta​ ​Cheese"};
   
 //      The following rules also apply to pizza pricing:
   
@@ -55,7 +55,7 @@ public class Pizza
    * 
    * @exception Exception Throw an error that there was a pizza mistake 
    */
-  public Pizza(String size, String crust, String sauce, String[] toppings) throws Exception{
+  public void Pizza(String size, String crust, String sauce, String[] toppings) throws Exception{
     if(Arrays.asList(SIZES).contains(size)){
       this.size = size;
     }

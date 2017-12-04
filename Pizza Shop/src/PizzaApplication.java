@@ -545,14 +545,16 @@ public class PizzaApplication
     
     Scanner scan = new Scanner(new FileInputStream(Order.ORDER_FILE));
     
+    String[] order = new String[5]; 
     while(scan.hasNextLine())
     {
-      Scanner falsescan = new Scanner(scan.nextLine());
       Scanner linescan = new Scanner(scan.nextLine());
       linescan.useDelimiter(",");
-      falsescan.useDelimiter(",");
-      if(falsescan.nextBoolean() == false){
-        orders += "Email: " +linescan.next()+ "\nOrder ID: " +linescan.next()+ "\nNumber of Pizzas: " +linescan.next()+ "\nCost of the order: $" +linescan.next()+ "\n\n";
+      for(int i=0; i<order.length; i++){
+        order[i] = linescan.next();
+      }
+      if(Boolean.valueOf(order[4]) == false){
+        orders += "Email: " +order[0]+ "\nOrder ID: " +order[1]+ "\nNumber of Pizzas: " +order[2]+ "\nCost of the order: $" +order[3]+ "\n\n";
       }
     }
     orders += "If anything seems incorrect, please call operations at 111-111-1111";
@@ -650,7 +652,7 @@ public class PizzaApplication
         break;
     }
     
-    String toSave = "";
+    String toSave = currentUser[0] + ",";
     for(int i=1; i<currentUser.length; i++){
       toSave += currentUser[i] + ",";
     }

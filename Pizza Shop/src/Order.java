@@ -13,7 +13,7 @@ import javax.swing.JTextField;
  */
 public class Order 
 {
-  private static final String ORDER_FILE = "orders.txt";  
+  protected static final String ORDER_FILE = "orders.txt";  
 //can use printf to add "O-00000" and pad with appropriate amount of zeros in front when storing to text file
   private static int orderID = 1;
   
@@ -80,7 +80,7 @@ public class Order
   
   
   
-  protected boolean saveOrder() throws Exception{
+  protected boolean saveOrder(String email) throws Exception{
     //File IO
     File orderFile = new File(Order.ORDER_FILE);
     orderFile.createNewFile();
@@ -95,10 +95,9 @@ public class Order
     }
     System.out.println("calculateCost: " + Double.toString(calculateCost()));
     
-    
     boolean saved = false;
     String toSave = "";
-    toSave += "" + orderID + "," + numPizzas + "," + Double.toString(calculateCost()) + "," + String.valueOf(wasDelivered);
+    toSave += email+ "," + orderID + "," + numPizzas + "," + Double.toString(calculateCost()) + "," + String.valueOf(wasDelivered) + ",\r\n";
     
     PrintWriter writer = null; 
     try{

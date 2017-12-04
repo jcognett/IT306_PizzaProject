@@ -1,8 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import java.io.*;
+import java.util.*;
 
 /**
  *
@@ -46,7 +43,7 @@ public class Order
     
     boolean saved = false;
     String toSave = "";
-    toSave += Integer.parseInt(orderID) + ", " + Integer.parseInt(numPizzas) + ", " + Double.toString(calculateCost()) + ", " + String.valueOf(wasDelivered);
+    toSave += "" + orderID + ", " + numPizzas + ", " + Double.toString(calculateCost()) + ", " + String.valueOf(wasDelivered);
     
     PrintWriter writer = null; 
     try{

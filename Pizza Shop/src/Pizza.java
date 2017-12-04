@@ -35,7 +35,7 @@ public class Pizza
   public static final Map <String, Double> cMap = new HashMap<String,Double>()
   {{
     put("Thin", 0.0);
-    put("Deep", 3.00);
+    put("Deep-Dish", 3.00);
     put("Regular", 0.0);
   }};
   

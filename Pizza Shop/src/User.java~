@@ -22,7 +22,7 @@ public abstract class User
     
     //public final static int MAX_ORDERS = 10;
     private Order currentOrder;
-    private Order[] orderHistory = new Order[10];
+    private Order[] orderHistory;
     
     public static int numUsers = 0;
     

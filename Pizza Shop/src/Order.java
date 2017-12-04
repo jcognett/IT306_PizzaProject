@@ -43,7 +43,7 @@ public class Order
     
     boolean saved = false;
     String toSave = "";
-    toSave += "" + orderID + ", " + numPizzas + ", " + Double.toString(calculateCost()) + ", " + String.valueOf(wasDelivered);
+    toSave += "" + orderID + "," + numPizzas + "," + Double.toString(calculateCost()) + "," + String.valueOf(wasDelivered);
     
     PrintWriter writer = null; 
     try{

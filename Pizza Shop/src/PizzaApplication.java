@@ -10,6 +10,7 @@ public class PizzaApplication
 {
   private static final String USER_FILE = "users.txt";
   private static final String[] STATES = {"DC", "MD", "VA"};
+  //Customer is account 1, Employee is 2, Manager is 3, and Driver is 4
   private static final String[] ACCOUNT_TYPES = {"Customer", "Employee","Manager", "Driver"};
   
   public static void main(String[] args) throws IOException
@@ -76,7 +77,7 @@ public class PizzaApplication
       case 2:
         displayEmployeeMenu();
       case 3:
-        displayManagerMenu();
+        displayManagerMenu(userFile);
       case 4:
         displayDriverMenu();
     }
@@ -93,7 +94,6 @@ public class PizzaApplication
   
   private static int authenticateUser(File userFile, String email, String password) throws FileNotFoundException
   {
-    //Authentication currently not working due to null values being read at the ends of each line in text file
     int authenticatedUserType = 0;
     String[] userLine = new String[10];
     
@@ -171,9 +171,9 @@ public class PizzaApplication
     }while(true);
   }
   
-  private static void displayManagerMenu()
+  private static void displayManagerMenu(File userFile) throws FileNotFoundException
   {
-    String menu ="1- New Order\n2- Outstanding Orders\n3- Order History\n4- Add Driver\n5- My Profile\n6-Logout";
+    String menu ="1- New Order\n2- Outstanding Orders\n3- Order History\n4- Add User\n5- My Profile\n6-Logout";
     int option = 0;
     do{
       option = Integer.parseInt(JOptionPane.showInputDialog(menu));
@@ -188,7 +188,7 @@ public class PizzaApplication
           //TODO
           break;
         case 4:
-          //TODO
+          promptForManagerEntry(userFile);
           break;                
         case 5:
           //TODO
@@ -200,22 +200,10 @@ public class PizzaApplication
     }while(true);
   }
   
-//  private static boolean checkForUser(File userFile) throws FileNotFoundException, IOException
-//  {
-//    boolean userFound = false;
-//    BufferedReader reader = new BufferedReader(new FileReader(userFile));  
-//    
-//    if (reader.readLine() != null)
-//      return true;
-//    
-//    return userFound;       
-//  }
-  
   private static void promptForUserEntry(File userFile) throws FileNotFoundException
   {
     //Still need to implement validation
     String userInfo = "";
-    
     String accountType = "1";
     String firstName = JOptionPane.showInputDialog(null,"First Name: ");
     String lastName = JOptionPane.showInputDialog(null,"Last Name: ");
@@ -242,6 +230,36 @@ public class PizzaApplication
     displayLogin(userFile);
   }
   
+  private static void promptForManagerEntry(File userFile) throws FileNotFoundException
+  {
+    //Still need to implement validation
+    String userInfo = "";
+    String accountType = JOptionPane.showInputDialog(null,"Account Type (1 = Customer, 2 = Employee, 3 = Manager, 4 = Driver): ");
+    String firstName = JOptionPane.showInputDialog(null,"First Name: ");
+    String lastName = JOptionPane.showInputDialog(null,"Last Name: ");
+    String phone = JOptionPane.showInputDialog(null,"Phone Number: ");
+    String streetAddress = JOptionPane.showInputDialog(null,"Street Address: ");
+    String city = JOptionPane.showInputDialog(null,"City: ");
+    String state = (String) JOptionPane.showInputDialog(null, 
+                                                        "State:",
+                                                        "Input",
+                                                        JOptionPane.QUESTION_MESSAGE, 
+                                                        null, 
+                                                        PizzaApplication.STATES, 
+                                                        PizzaApplication.STATES[2]);
+    
+    String zip = JOptionPane.showInputDialog(null,"Zip Code: ");
+    String email = JOptionPane.showInputDialog(null,"Email Address: ");
+    //String password = getUserPassword();
+    String password = JOptionPane.showInputDialog(null, "Password:");
+    
+    
+    userInfo += accountType + "," + firstName + "," + lastName + "," + streetAddress + "," + city + "," + state + "," + zip + "," + phone + "," + email + "," + password + ",\n";
+    writeToFile(userFile, userInfo);
+    
+    displayManagerMenu(userFile);
+  }
+  
   
   private static void writeToFile(File userFile, String userInfo)
   {
@@ -256,53 +274,6 @@ public class PizzaApplication
     }
     writer.close();
   }
-  
-  
-  
-  
-//  private static String[] fillArray(String accountType, 
-//                                    String firstName, String lastName, String streetAddress, 
-//                                    String city, String state, String zip, String phone, String email, String password)
-//  {
-//    String[] userInfo = new String[9];
-//    userInfo[0] = accountType;
-//    userInfo[1] = firstName;
-//    userInfo[2] = lastName;
-//    userInfo[3] = streetAddress;
-//    userInfo[4] = city;
-//    userInfo[5] = state;
-//    userInfo[6] = zip;
-//    userInfo[7] = email;
-//    userInfo[8] = password;
-//    
-//    return userInfo;
-//  }
-//  
-  
-  
-//  private static String getUserPassword()
-//  {
-//    
-//    JPanel panel = new JPanel();
-//    JLabel label = new JLabel("Enter a password:");
-//    char[] password=null;
-//    JPasswordField pass = new JPasswordField(10);
-//    panel.add(label);
-//    panel.add(pass);
-//    String[] options = new String[]{"OK", "Cancel"};
-//    int option = JOptionPane.showOptionDialog(null, panel, "Enter Password",
-//                                              JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
-//                                              null, options, options[1]);
-//    if(option == 0) // pressing OK button
-//    {
-//      //Where is this saved?
-//      password = pass.getPassword();
-//      //System.out.println("Your password is: " + new String(password));
-//    }
-//    
-//    return new String(password);
-//  }
-  
   
 }
 

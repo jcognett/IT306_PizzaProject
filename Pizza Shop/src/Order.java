@@ -9,7 +9,8 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author j3ste
+ * Order Data definition class, consists of Pizzas and includes functionality to mark as delivered
+ * @author Sharif Elkasse, John Cognetti
  */
 public class Order 
 {
@@ -56,8 +57,9 @@ public class Order
     return cost;
   }
   
-  
-
+  /**
+   * getPizzas is the input dialog for the user to input their order
+   */
   private void getPizzas() throws Exception{
     for(int i=0; i<numPizzas; i++){
       String size = JOptionPane.showInputDialog(null, "What size pizza will you be ordering? \n Options are: Kids, Small, Medium, Large, Party");
@@ -79,7 +81,10 @@ public class Order
     }
   
   
-  
+  /**
+   * saveOrder is the method to write an order to a file in order to save it perminantly.
+   * @param email the email that will be associtated with the order
+   */
   protected boolean saveOrder(String email) throws Exception{
     //File IO
     File orderFile = new File(Order.ORDER_FILE);

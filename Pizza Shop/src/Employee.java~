@@ -1,8 +1,15 @@
-/**
- * Employee type class, child of User and parent of Driver and Manager
- * @author Sharif Elkasse, John Cognetti
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 
+/**
+ *
+ * @author j3ste
+ */
+
+//Employee shouldnt be abstract since there can be cooks/waiters, thoughts?
 public class Employee extends User
 {
     //can use printf to add "E-00000" and pad with appropriate amount of zeros in front when storing to text file

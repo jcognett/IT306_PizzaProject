@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
- * @author j3ste
+ *User data definition class is the parent of all users on the system.  It holds all personal information on the accounts.  
+ * @author Sharif Elkasse, John Cognetti
  */
 public abstract class User 
 {

@@ -12,6 +12,8 @@ public class PizzaApplication
   private static final String[] STATES = {"DC", "MD", "VA"};
   //Customer is account 1, Employee is 2, Manager is 3, and Driver is 4
   private static final String[] ACCOUNT_TYPES = {"Customer", "Employee","Manager", "Driver"};
+  private static String[] currentUser = new String[10]; 
+  
   
   public static void main(String[] args) throws IOException, Exception
   {
@@ -73,13 +75,13 @@ public class PizzaApplication
         JOptionPane.showMessageDialog(null, "Invalid Credentials \n Please Try Again!");
         displayLogin(userFile);
       case 1:
-        displayCustomerMenu();
+        displayCustomerMenu(userFile);
       case 2:
-        displayEmployeeMenu();
+        displayEmployeeMenu(userFile);
       case 3:
         displayManagerMenu(userFile);
       case 4:
-        displayDriverMenu();
+        displayDriverMenu(userFile);
     }
   }
   
@@ -106,6 +108,7 @@ public class PizzaApplication
       int i = 0;
       while (linescan.hasNext()){
         userLine[i] = linescan.next();
+        currentUser[i] = userLine[i]; 
         i++;
       }
       if((email.equals(userLine[8])) && (password.equals(userLine[9]))){
@@ -115,39 +118,59 @@ public class PizzaApplication
     return authenticatedUserType;
   }
   
-  private static void displayCustomerMenu() throws Exception
+  private static void displayCustomerMenu(File userFile) throws Exception
   {
-    String menu ="1- New Order\n2- Check My Orders\n3- Recent Orders\n4- My Profile\n5- Logout";
+    String menu ="1- New Order\n2- Check My Orders\n3- Recent Order\n4- My Profile\n5- Logout";
     int option = 0;
     do{
       option = Integer.parseInt(JOptionPane.showInputDialog(menu));
       switch(option){
         case 1:
-          makeOrder();
+          makeOrder(userFile);
           break;
         case 2:
-          //TODO
+          listOrders();
           break;
         case 3:
-          //TODO
+          listRecentOrder();
           break;
         case 4:
-          //TODO
+          myProfile(userFile);
           break;
         case 5:
-          //TODO
           JOptionPane.showMessageDialog(null, "Logging you out...");
-          System.exit(0);
+          displayLogin(userFile);
       }
     }while(true);
   }
   
-  private static void displayEmployeeMenu()
+  private static void displayEmployeeMenu(File userFile) throws Exception
   {
-    //Employee should be an abstract class. Will implement and remove
+    String menu ="1- New Order\n2- Check My Orders\n3- Recent Order\n4- My Profile\n5- Logout";
+    int option = 0;
+    do{
+      option = Integer.parseInt(JOptionPane.showInputDialog(menu));
+      switch(option){
+        case 1:
+          makeOrder(userFile);
+          break;
+        case 2:
+          listOrders();
+          break;
+        case 3:
+          listRecentOrder();
+          break;
+        case 4:
+          myProfile(userFile);
+          break;
+        case 5:
+          JOptionPane.showMessageDialog(null, "Logging you out...");
+          displayLogin(userFile);
+      }
+    }while(true);
   }
   
-  private static void displayDriverMenu() throws Exception
+  private static void displayDriverMenu(File userFile) throws Exception
   {
     String menu ="1- New Order\n2- Deliveries\n3- My Delivery History\n4- Logout";
     int option = 0;
@@ -155,18 +178,17 @@ public class PizzaApplication
       option = Integer.parseInt(JOptionPane.showInputDialog(menu));
       switch(option){
         case 1:
-          makeOrder();
+          makeOrder(userFile);
           break;
         case 2:
-          //TODO
+          listOutstandingOrders();
           break;
         case 3:
           //TODO
           break;
         case 4:
           JOptionPane.showMessageDialog(null, "Logging you out...");
-          System.exit(0);
-          
+          displayLogin(userFile);
       }
     }while(true);
   }
@@ -179,23 +201,23 @@ public class PizzaApplication
       option = Integer.parseInt(JOptionPane.showInputDialog(menu));
       switch(option){
         case 1:
-          makeOrder();
+          makeOrder(userFile);
           break;
         case 2:
-          //TODO
+          listOutstandingOrders();
           break;
         case 3:
-          //TODO
+          listAllOrders();
           break;
         case 4:
           promptForManagerEntry(userFile);
           break;                
         case 5:
-          //TODO
+          myProfile(userFile);
           break;
         case 6:
           JOptionPane.showMessageDialog(null, "Logging you out...");
-          System.exit(0);
+          displayLogin(userFile);
       }
     }while(true);
   }
@@ -224,7 +246,7 @@ public class PizzaApplication
     String password = JOptionPane.showInputDialog(null, "Password:");
     
     
-    userInfo += accountType + "," + firstName + "," + lastName + "," + streetAddress + "," + city + "," + state + "," + zip + "," + phone + "," + email + "," + password + ",\n";
+    userInfo += accountType + "," + firstName + "," + lastName + "," + streetAddress + "," + city + "," + state + "," + zip + "," + phone + "," + email + "," + password + ",\r\n";
     writeToFile(userFile, userInfo);
     
     displayLogin(userFile);
@@ -252,58 +274,59 @@ public class PizzaApplication
     String email = JOptionPane.showInputDialog(null,"Email Address: ");
     String password = JOptionPane.showInputDialog(null, "Password:");
     
-    userInfo += accountType + "," + firstName + "," + lastName + "," + streetAddress + "," + city + "," + state + "," + zip + "," + phone + "," + email + "," + password + ",\n";
+    userInfo += accountType + "," + firstName + "," + lastName + "," + streetAddress + "," + city + "," + state + "," + zip + "," + phone + "," + email + "," + password + ",\r\n";
     writeToFile(userFile, userInfo);
     
     displayManagerMenu(userFile);
   }
   
-  private static void makeOrder() throws Exception
+  private static void makeOrder(File userFile) throws Exception
   {
     //create a while loop that continues to prompt ask the user if they would like to add another pizza to the order
     //each time a pizza is successfully created, increment numPizzas
     
-      
+    
     //int numPizza = Integer.parseInt(JOptionPane.showInputDialog(null, "How many pizzas will you be ordering?"));
     //Order order = new Order(numPizza);
     //int numPizzas = 0;
     ArrayList<Pizza> pizzaList = new ArrayList<Pizza>();
     Order order = new Order();
+    String email = currentUser[8];
     
     do
     {
-        
-        String size = getPizzaSize();
-        String crust = getCrustType();
-        String sauce = getSauceType();
-        String[] toppings = getToppings();
-        Pizza thisPizza = null;
-        
-        System.out.println("printing out Pizza info before creating pizza ojbect:");
-        System.out.println("size: " + size);
-        System.out.println("crust: " + crust);
-        System.out.println("sauce: " + sauce);
-        System.out.println("toppings:");
-        for(int i = 0; i < toppings.length; i++)
-        {
-            System.out.println(toppings[i]);
-        }
-        
-        if (toppings.length > 0)
-        {
-             thisPizza = new Pizza(size, crust, sauce, toppings);
-        }
-        else
-        {
-             thisPizza = new Pizza(size, crust, sauce);
-        }
-        
-        //numPizzas++;
-        pizzaList.add(thisPizza);
-    
+      
+      String size = getPizzaSize();
+      String crust = getCrustType();
+      String sauce = getSauceType();
+      String[] toppings = getToppings();
+      Pizza thisPizza = null;
+      
+      System.out.println("printing out Pizza info before creating pizza ojbect:");
+      System.out.println("size: " + size);
+      System.out.println("crust: " + crust);
+      System.out.println("sauce: " + sauce);
+      System.out.println("toppings:");
+      for(int i = 0; i < toppings.length; i++)
+      {
+        System.out.println(toppings[i]);
+      }
+      
+      if (toppings.length > 0)
+      {
+        thisPizza = new Pizza(size, crust, sauce, toppings);
+      }
+      else
+      {
+        thisPizza = new Pizza(size, crust, sauce);
+      }
+      
+      //numPizzas++;
+      pizzaList.add(thisPizza);
+      
     }
     while(JOptionPane.showConfirmDialog(null, "Add another pizza?", "WARNING",
-        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
+                                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
     
     
     Pizza[] pizzas = pizzaList.toArray(new Pizza[pizzaList.size()]);
@@ -311,91 +334,260 @@ public class PizzaApplication
     System.out.println("Printing out the array of pizzas for this order before adding them to the order object:");
     for(int i = 0; i < pizzas.length; i++)
     {
-        System.out.println(pizzas[i].toString());
+      System.out.println(pizzas[i].toString());
     }
     
     order.setPizzas(pizzas);
     
-    if(order.saveOrder())
+    if(order.saveOrder(email))
       JOptionPane.showMessageDialog(null, "Order Placed");
   }
   
   
   private static String[] getToppings()
   {
-      //create toppings after you get the count of the num elements in temp array
-      //String[] toppings = null;
+    //create toppings after you get the count of the num elements in temp array
+    //String[] toppings = null;
+    
+    
+    //String[] temp = new String[20];
+    //int numToppings = 0;
+    ArrayList<String> toppingsList = new ArrayList<String>();
+    
+    int option = (JOptionPane.showConfirmDialog(null, "Add toppings to your pizza?", "WARNING",
+                                                JOptionPane.YES_NO_OPTION));
+    
+    if(option == JOptionPane.YES_OPTION)
+    {
       
-      
-      //String[] temp = new String[20];
-      //int numToppings = 0;
-      ArrayList<String> toppingsList = new ArrayList<String>();
-      
-      int option = (JOptionPane.showConfirmDialog(null, "Add toppings to your pizza?", "WARNING",
-        JOptionPane.YES_NO_OPTION));
-      
-      if(option == JOptionPane.YES_OPTION)
+      do
       {
-          
-            do
-            {
-                String topping = (String) JOptionPane.showInputDialog(null, 
+        String topping = (String) JOptionPane.showInputDialog(null, 
                                                               "Add a topping:",
                                                               "Input",
                                                               JOptionPane.QUESTION_MESSAGE, 
                                                               null, 
                                                               Pizza.TOPPINGS, 
-                                                            Pizza.TOPPINGS[0]);
-
-                
-                toppingsList.add(topping);
-
-            }
-            while(JOptionPane.showConfirmDialog(null, "Add another topping?", "WARNING",
-              JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
-
-       }
-            
+                                                              Pizza.TOPPINGS[0]);
+        
+        
+        toppingsList.add(topping);
+        
+      }
+      while(JOptionPane.showConfirmDialog(null, "Add another topping?", "WARNING",
+                                          JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
       
-      String[] toppings = toppingsList.toArray(new String[toppingsList.size()]);
-      return toppings;
+    }
+    
+    
+    String[] toppings = toppingsList.toArray(new String[toppingsList.size()]);
+    return toppings;
   }
   
   
   private static String getSauceType()
   {
-      String sauce = (String) JOptionPane.showInputDialog(null, 
+    String sauce = (String) JOptionPane.showInputDialog(null, 
                                                         "Choose a sauce:",
                                                         "Input",
                                                         JOptionPane.QUESTION_MESSAGE, 
                                                         null, 
                                                         Pizza.SAUCES, 
                                                         Pizza.SAUCES[0]);
-      return sauce;
+    return sauce;
   }
   private static String getCrustType()
   {
-      String crust = (String) JOptionPane.showInputDialog(null, 
+    String crust = (String) JOptionPane.showInputDialog(null, 
                                                         "Choose a crust:",
                                                         "Input",
                                                         JOptionPane.QUESTION_MESSAGE, 
                                                         null, 
                                                         Pizza.CRUSTS, 
                                                         Pizza.CRUSTS[0]);
-      return crust;
+    return crust;
   }
   
   private static String getPizzaSize()
   {
-      String size = (String) JOptionPane.showInputDialog(null, 
-                                                        "Choose a pizza size:",
-                                                        "Input",
-                                                        JOptionPane.QUESTION_MESSAGE, 
-                                                        null, 
-                                                        Pizza.SIZES, 
-                                                        Pizza.SIZES[0]);
-      return size;
+    String size = (String) JOptionPane.showInputDialog(null, 
+                                                       "Choose a pizza size:",
+                                                       "Input",
+                                                       JOptionPane.QUESTION_MESSAGE, 
+                                                       null, 
+                                                       Pizza.SIZES, 
+                                                       Pizza.SIZES[0]);
+    return size;
   }
+  
+  private static void listOrders() throws Exception{
+    String email = currentUser[8];
+    String orders = "";
+    
+    Scanner scan = new Scanner(new FileInputStream(Order.ORDER_FILE));
+    
+    while(scan.hasNextLine())
+    {
+      Scanner linescan = new Scanner(scan.nextLine());
+      linescan.useDelimiter(",");
+      if(linescan.next().equals(email)){
+        orders += "Order ID: " + linescan.next() + "\nNumber of Pizzas: " + linescan.next() + "\nCost of the order: $" + linescan.next() + "\nOrder delivered? " + linescan.next() + "\n\n";
+      }
+    }
+    orders += "If anything seems incorrect, please call the store at 555-555-5555";
+    JOptionPane.showMessageDialog(null, orders);
+    scan.close();
+  }
+  
+  private static void listRecentOrder() throws Exception{
+    String email = currentUser[8];
+    String orders = "";
+    
+    Scanner scan = new Scanner(new FileInputStream(Order.ORDER_FILE));
+    
+    while(scan.hasNextLine())
+    {
+      Scanner linescan = new Scanner(scan.nextLine());
+      linescan.useDelimiter(",");
+      if(linescan.next().equals(email)){
+        orders = "Order ID: " + linescan.next() + "\nNumber of Pizzas: " + linescan.next() + "\nCost of the order: $" + linescan.next() + "\nOrder delivered? " + linescan.next() + "\n\n";
+      }
+    }
+    orders += "If anything seems incorrect, please call the store at 555-555-5555";
+    JOptionPane.showMessageDialog(null, orders);
+    scan.close();
+  }
+  
+  
+  
+  private static void listAllOrders() throws Exception{
+    String orders = "";
+    
+    Scanner scan = new Scanner(new FileInputStream(Order.ORDER_FILE));
+    
+    while(scan.hasNextLine())
+    {
+      Scanner linescan = new Scanner(scan.nextLine());
+      linescan.useDelimiter(",");
+      orders += "Email: " +linescan.next()+ "\nOrder ID: " +linescan.next()+ "\nNumber of Pizzas: " +linescan.next()+ "\nCost of the order: $" +linescan.next()+ "\nOrder delivered? " +linescan.next()+ "\n\n";
+    }
+    orders += "If anything seems incorrect, please call operations at 111-111-1111";
+    JOptionPane.showMessageDialog(null, orders);
+    scan.close();
+  }
+  
+  private static void listOutstandingOrders() throws Exception{
+    String orders = "";
+    
+    Scanner scan = new Scanner(new FileInputStream(Order.ORDER_FILE));
+    
+    while(scan.hasNextLine())
+    {
+      Scanner falsescan = new Scanner(scan.nextLine());
+      Scanner linescan = new Scanner(scan.nextLine());
+      linescan.useDelimiter(",");
+      falsescan.useDelimiter(",");
+      if(falsescan.nextBoolean() == false){
+        orders += "Email: " +linescan.next()+ "\nOrder ID: " +linescan.next()+ "\nNumber of Pizzas: " +linescan.next()+ "\nCost of the order: $" +linescan.next()+ "\n\n";
+      }
+    }
+    orders += "If anything seems incorrect, please call operations at 111-111-1111";
+    JOptionPane.showMessageDialog(null, orders);
+  }
+  
+  private static void listDeliveryOrderInfo(File userFile) throws Exception{
+    String out = "";
+    String[] userLine = new String[10];
+    
+    Scanner orderScan = new Scanner(new FileInputStream(Order.ORDER_FILE));
+    Scanner userScan = new Scanner(new FileInputStream(USER_FILE));
+    
+    while(orderScan.hasNextLine())
+    {
+      Scanner falselinescan = new Scanner(orderScan.nextLine());
+      Scanner linescan = new Scanner(userScan.nextLine());
+      linescan.useDelimiter(",");
+      falselinescan.useDelimiter(",");
+      if(falselinescan.nextBoolean() == false){
+        String email = falselinescan.next();
+        out += "\nOrder ID: " +falselinescan.next()+ "\nNumber of Pizzas: " +falselinescan.next()+ "\nCost of the order: $" +falselinescan.next()+ "\n -----\n";
+        while(userScan.hasNextLine()){
+          linescan.useDelimiter(",");
+          int i = 0;
+          while (linescan.hasNext()){
+            userLine[i] = linescan.next();
+            i++;
+          }
+          if(email.equals(userLine[8])){
+            out += userLine[1] + " " + userLine[2] + "\n" + userLine[3] + " " + userLine[4]+" " +userLine[5]+" "+userLine[6] + "\n" + userLine[7] + "\n\n";
+          }
+        }
+      }
+    }
+    out += "If anything seems incorrect, please call operations at 111-111-1111";
+    JOptionPane.showMessageDialog(null, out);
+  }
+  
+  private static void myProfile(File userFile) throws Exception{
+    String email = currentUser[8];
+    String profile = "";
+    String update = "";
+    
+    for(int i=1; i<currentUser.length; i++){
+      profile += i +": " + currentUser[i] + "\r\n";
+    }
+    
+    int change = Integer.parseInt(JOptionPane.showInputDialog(null, profile +"Or type 10 to cancel \r\n" + "Please type the number of what you wish to update"));
+    switch(change){
+      case 1:
+        update = JOptionPane.showInputDialog(null, "Please type your changes");
+        currentUser[1] = update;
+        break;
+      case 2:
+        update = JOptionPane.showInputDialog(null, "Please type your changes");
+        currentUser[2] = update;
+        break;
+      case 3:
+        update = JOptionPane.showInputDialog(null, "Please type your changes");
+        currentUser[3] = update;
+        break;
+      case 4:
+        update = JOptionPane.showInputDialog(null, "Please type your changes");
+        currentUser[4] = update;
+        break;
+      case 5:
+        update = JOptionPane.showInputDialog(null, "Please type your changes");
+        currentUser[5] = update;
+        break;
+      case 6:
+        update = JOptionPane.showInputDialog(null, "Please type your changes");
+        currentUser[6] = update;
+        break;
+      case 7:
+        update = JOptionPane.showInputDialog(null, "Please type your changes");
+        currentUser[7] = update;
+        break;
+      case 8:
+        update = JOptionPane.showInputDialog(null, "Please type your changes");
+        currentUser[8] = update;
+        break;
+      case 9:
+        update = JOptionPane.showInputDialog(null, "Please type your changes");
+        currentUser[9] = update;
+        break;
+      case 10:
+        break;
+    }
+    
+    String toSave = "";
+    for(int i=1; i<currentUser.length; i++){
+      toSave += currentUser[i] + ",";
+    }
+    toSave += "\r\n";
+    writeToFile(userFile, toSave);
+    
+  }
+  
   private static void writeToFile(File userFile, String userInfo)
   {
     PrintWriter writer = null; 

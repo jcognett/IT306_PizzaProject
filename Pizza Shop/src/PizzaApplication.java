@@ -6,6 +6,11 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+
+/**
+ * PizzaApplication is the main class of the program, it hodls the majority of the UI elements and controls the data flow.  
+ * @author Sharif Elkasse, John Cognetti
+ */
 public class PizzaApplication 
 {
   private static final String USER_FILE = "users.txt";
@@ -27,6 +32,10 @@ public class PizzaApplication
     
   }
   
+  /**
+   * The initial menu whiich asks the user to login, create a new account, or exit.
+   * @param userFile the file that holds account information
+   */
   private static void initialMenu(File userFile) throws FileNotFoundException, Exception{
     String menu = "1- Login\n2- Create New Account\n3- Exit";
     int option = 0;
@@ -44,12 +53,16 @@ public class PizzaApplication
     }
   }
   
+  /**
+   * The main login screen, asks for an email and a password before sending to a helper method to authenticate
+   * @param userFile the file that contains all the account information
+   */
   private static void displayLogin(File userFile) throws FileNotFoundException, Exception
   {
     boolean validEmail = false;
     int authenticatedType = 0;
     String email = null;
-    
+    //using Jpanels so that password is hidden
     JPanel panel = new JPanel();
     JLabel usernameLabel = new JLabel("Email: ");
     JLabel passwordLabel = new JLabel("Password:");
@@ -68,10 +81,12 @@ public class PizzaApplication
     {
       email = emailInput.getText();
       password = charsToString(pass.getPassword());
+      //authenticatedType is the type of account labled from 1-4
       authenticatedType = authenticateUser(userFile, email, password);
     }
     switch(authenticatedType){
       case 0:
+        //If it is default, something went wrong and they need to try again
         JOptionPane.showMessageDialog(null, "Invalid Credentials \n Please Try Again!");
         displayLogin(userFile);
       case 1:
@@ -85,6 +100,11 @@ public class PizzaApplication
     }
   }
   
+  /**
+   * helper method for the displayLogin, since a JPanel password is a char array
+   * @param chars array to become a string
+   * @return returns a string
+   */
   private static String charsToString(char[] chars){
     String out = "";
     for(int i=0; i<chars.length; i++){
@@ -93,7 +113,13 @@ public class PizzaApplication
     return out;
   }
   
-  
+  /**
+   * Main authentication method, scans the userFile and compares the username and password to the ones the user input
+   * @param userFile the file that contains all account information
+   * @param email the email set by the user
+   * @param password the password set by the user
+   * @return Integer value of the account type
+   */
   private static int authenticateUser(File userFile, String email, String password) throws FileNotFoundException
   {
     int authenticatedUserType = 0;
@@ -111,6 +137,7 @@ public class PizzaApplication
         currentUser[i] = userLine[i]; 
         i++;
       }
+      //Authentication check
       if((email.equals(userLine[8])) && (password.equals(userLine[9]))){
         authenticatedUserType = Integer.parseInt(userLine[0]);
       }
@@ -118,8 +145,13 @@ public class PizzaApplication
     return authenticatedUserType;
   }
   
+  /**
+   * The main customer menu, shown once they have authenticated and logged in
+   * @param userFile holds all the account information
+   */
   private static void displayCustomerMenu(File userFile) throws Exception
   {
+    //The customer's menu
     String menu ="1- New Order\n2- Check My Orders\n3- Recent Order\n4- My Profile\n5- Logout";
     int option = 0;
     do{
@@ -144,9 +176,13 @@ public class PizzaApplication
     }while(true);
   }
   
+  /**
+   * The main employee menu, very similar functionality to the customer
+   * @param userFile file that holds account information
+   */
   private static void displayEmployeeMenu(File userFile) throws Exception
   {
-    String menu ="1- New Order\n2- Check My Orders\n3- Recent Order\n4- My Profile\n5- Logout";
+    String menu ="1- New Order\n2- Check My Orders\n3- Recent Order\n4- Logout";
     int option = 0;
     do{
       option = Integer.parseInt(JOptionPane.showInputDialog(menu));
@@ -161,15 +197,16 @@ public class PizzaApplication
           listRecentOrder();
           break;
         case 4:
-          myProfile(userFile);
-          break;
-        case 5:
           JOptionPane.showMessageDialog(null, "Logging you out...");
           displayLogin(userFile);
       }
     }while(true);
   }
   
+  /**
+   * the main driver menu, drivers can make orders, deliver orders, and check old deliveries
+   * @param userFile holds all user information
+   */
   private static void displayDriverMenu(File userFile) throws Exception
   {
     String menu ="1- New Order\n2- Deliveries\n3- My Delivery History\n4- Logout";
@@ -193,6 +230,10 @@ public class PizzaApplication
     }while(true);
   }
   
+  /**
+   * Manager's main menu, managers have the ability to make orders, check outstanding orders, order history, and add new users
+   * @param userFile holds user account information
+   */
   private static void displayManagerMenu(File userFile) throws FileNotFoundException, Exception
   {
     String menu ="1- New Order\n2- Outstanding Orders\n3- Order History\n4- Add User\n5- My Profile\n6-Logout";
@@ -222,10 +263,15 @@ public class PizzaApplication
     }while(true);
   }
   
+  /**
+   * Menu to create a new account, follows the same steps as stored in the file
+   * @param userFile holds user account information
+   */
   private static void promptForUserEntry(File userFile) throws FileNotFoundException, Exception
   {
     //Still need to implement validation
     String userInfo = "";
+    //standard customer accounts is type 1
     String accountType = "1";
     String firstName = JOptionPane.showInputDialog(null,"First Name: ");
     String lastName = JOptionPane.showInputDialog(null,"Last Name: ");
@@ -242,16 +288,18 @@ public class PizzaApplication
     
     String zip = JOptionPane.showInputDialog(null,"Zip Code: ");
     String email = JOptionPane.showInputDialog(null,"Email Address: ");
-    //String password = getUserPassword();
     String password = JOptionPane.showInputDialog(null, "Password:");
     
-    
+    //Output string to be saved
     userInfo += accountType + "," + firstName + "," + lastName + "," + streetAddress + "," + city + "," + state + "," + zip + "," + phone + "," + email + "," + password + ",\r\n";
     writeToFile(userFile, userInfo);
     
     displayLogin(userFile);
   }
   
+  /**
+   * Slightly different from normal user entry, the manager can decide the type of account
+   */
   private static void promptForManagerEntry(File userFile) throws FileNotFoundException, Exception
   {
     //Still need to implement validation
@@ -274,12 +322,17 @@ public class PizzaApplication
     String email = JOptionPane.showInputDialog(null,"Email Address: ");
     String password = JOptionPane.showInputDialog(null, "Password:");
     
+    //output string to be saved
     userInfo += accountType + "," + firstName + "," + lastName + "," + streetAddress + "," + city + "," + state + "," + zip + "," + phone + "," + email + "," + password + ",\r\n";
     writeToFile(userFile, userInfo);
     
     displayManagerMenu(userFile);
   }
   
+  /**
+   * Call to create an order, asks the user for number of pizzas and begind another dialog
+   * @param userFile holds user account information
+   */
   private static void makeOrder(File userFile) throws Exception
   {
     //create a while loop that continues to prompt ask the user if they would like to add another pizza to the order
@@ -295,7 +348,7 @@ public class PizzaApplication
     
     do
     {
-      
+      //main dialog 
       String size = getPizzaSize();
       String crust = getCrustType();
       String sauce = getSauceType();
@@ -338,7 +391,7 @@ public class PizzaApplication
     }
     
     order.setPizzas(pizzas);
-    
+    //save the order
     if(order.saveOrder(email))
       JOptionPane.showMessageDialog(null, "Order Placed");
   }
@@ -420,7 +473,11 @@ public class PizzaApplication
     return size;
   }
   
+  /**
+   * Lists the orders placed by a user
+   */
   private static void listOrders() throws Exception{
+    //needed to check against in the file
     String email = currentUser[8];
     String orders = "";
     
@@ -439,6 +496,9 @@ public class PizzaApplication
     scan.close();
   }
   
+  /**
+   * Very similar to listOrders(), instead it only shows the most recent order
+   */
   private static void listRecentOrder() throws Exception{
     String email = currentUser[8];
     String orders = "";
@@ -458,8 +518,9 @@ public class PizzaApplication
     scan.close();
   }
   
-  
-  
+  /**
+   * Reserved for a manager, this lists all the orders in the file.  
+   */
   private static void listAllOrders() throws Exception{
     String orders = "";
     
@@ -476,6 +537,9 @@ public class PizzaApplication
     scan.close();
   }
   
+  /**
+   * Lists all orders still marked not delivered
+   */
   private static void listOutstandingOrders() throws Exception{
     String orders = "";
     
@@ -495,6 +559,9 @@ public class PizzaApplication
     JOptionPane.showMessageDialog(null, orders);
   }
   
+  /**
+   * Used by the driver to determine which orders still need to be delivered
+   */
   private static void listDeliveryOrderInfo(File userFile) throws Exception{
     String out = "";
     String[] userLine = new String[10];
@@ -528,8 +595,11 @@ public class PizzaApplication
     JOptionPane.showMessageDialog(null, out);
   }
   
+  /**
+   * Used by the customer class to change their information.
+   * @param userFile holds user account information
+   */
   private static void myProfile(File userFile) throws Exception{
-    String email = currentUser[8];
     String profile = "";
     String update = "";
     
@@ -537,6 +607,7 @@ public class PizzaApplication
       profile += i +": " + currentUser[i] + "\r\n";
     }
     
+    //Shows the user their current information and asks which needs updating
     int change = Integer.parseInt(JOptionPane.showInputDialog(null, profile +"Or type 10 to cancel \r\n" + "Please type the number of what you wish to update"));
     switch(change){
       case 1:
@@ -584,16 +655,22 @@ public class PizzaApplication
       toSave += currentUser[i] + ",";
     }
     toSave += "\r\n";
+    //Saves the changes
     writeToFile(userFile, toSave);
     
   }
   
-  private static void writeToFile(File userFile, String userInfo)
+  /**
+   * helper method for file clases, needed to write changes to a file
+   * @param file holds account information
+   * @param info any information that needs to be saved
+   */
+  private static void writeToFile(File file, String info)
   {
     PrintWriter writer = null; 
     try {
-      writer = new PrintWriter(new FileOutputStream(userFile, true));
-      writer.append(userInfo);
+      writer = new PrintWriter(new FileOutputStream(file, true));
+      writer.append(info);
     } 
     catch (FileNotFoundException e) {
       // TODO Auto-generated catch block

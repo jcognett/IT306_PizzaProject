@@ -2,15 +2,9 @@ import java.util.*;
 import java.util.HashMap;
 import java.util.Map;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
- * @author j3ste
+ * Pizza type class, Map data structure used for the prices and in calculating cost.
+ * @author Sharif Elkasse, John Cognetti
  */
 public class Pizza 
 {

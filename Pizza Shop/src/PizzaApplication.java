@@ -13,7 +13,7 @@ public class PizzaApplication
   //Customer is account 1, Employee is 2, Manager is 3, and Driver is 4
   private static final String[] ACCOUNT_TYPES = {"Customer", "Employee","Manager", "Driver"};
   
-  public static void main(String[] args) throws IOException
+  public static void main(String[] args) throws IOException, Exception
   {
     //Create a File object
     File userFile = new File(PizzaApplication.USER_FILE);
@@ -25,7 +25,7 @@ public class PizzaApplication
     
   }
   
-  private static void initialMenu(File userFile) throws FileNotFoundException{
+  private static void initialMenu(File userFile) throws FileNotFoundException, Exception{
     String menu = "1- Login\n2- Create New Account\n3- Exit";
     int option = 0;
     option = Integer.parseInt(JOptionPane.showInputDialog(menu));
@@ -42,7 +42,7 @@ public class PizzaApplication
     }
   }
   
-  private static void displayLogin(File userFile) throws FileNotFoundException
+  private static void displayLogin(File userFile) throws FileNotFoundException, Exception
   {
     boolean validEmail = false;
     int authenticatedType = 0;
@@ -171,7 +171,7 @@ public class PizzaApplication
     }while(true);
   }
   
-  private static void displayManagerMenu(File userFile) throws FileNotFoundException
+  private static void displayManagerMenu(File userFile) throws FileNotFoundException, Exception
   {
     String menu ="1- New Order\n2- Outstanding Orders\n3- Order History\n4- Add User\n5- My Profile\n6-Logout";
     int option = 0;
@@ -200,7 +200,7 @@ public class PizzaApplication
     }while(true);
   }
   
-  private static void promptForUserEntry(File userFile) throws FileNotFoundException
+  private static void promptForUserEntry(File userFile) throws FileNotFoundException, Exception
   {
     //Still need to implement validation
     String userInfo = "";
@@ -230,7 +230,7 @@ public class PizzaApplication
     displayLogin(userFile);
   }
   
-  private static void promptForManagerEntry(File userFile) throws FileNotFoundException
+  private static void promptForManagerEntry(File userFile) throws FileNotFoundException, Exception
   {
     //Still need to implement validation
     String userInfo = "";
@@ -258,14 +258,144 @@ public class PizzaApplication
     displayManagerMenu(userFile);
   }
   
-  private static void makeOrder() throws Exception{
-    int numPizza = Integer.parseInt(JOptionPane.showInputDialog(null, "How many pizzas will you be ordering?"));
-    Order order = new Order(numPizza);
+  private static void makeOrder() throws Exception
+  {
+    //create a while loop that continues to prompt ask the user if they would like to add another pizza to the order
+    //each time a pizza is successfully created, increment numPizzas
+    
+      
+    //int numPizza = Integer.parseInt(JOptionPane.showInputDialog(null, "How many pizzas will you be ordering?"));
+    //Order order = new Order(numPizza);
+    //int numPizzas = 0;
+    ArrayList<Pizza> pizzaList = new ArrayList<Pizza>();
+    Order order = new Order();
+    
+    do
+    {
+        
+        String size = getPizzaSize();
+        String crust = getCrustType();
+        String sauce = getSauceType();
+        String[] toppings = getToppings();
+        Pizza thisPizza = null;
+        
+        System.out.println("printing out Pizza info before creating pizza ojbect:");
+        System.out.println("size: " + size);
+        System.out.println("crust: " + crust);
+        System.out.println("sauce: " + sauce);
+        System.out.println("toppings:");
+        for(int i = 0; i < toppings.length; i++)
+        {
+            System.out.println(toppings[i]);
+        }
+        
+        if (toppings.length > 0)
+        {
+             thisPizza = new Pizza(size, crust, sauce, toppings);
+        }
+        else
+        {
+             thisPizza = new Pizza(size, crust, sauce);
+        }
+        
+        //numPizzas++;
+        pizzaList.add(thisPizza);
+    
+    }
+    while(JOptionPane.showConfirmDialog(null, "Add another pizza?", "WARNING",
+        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
+    
+    
+    Pizza[] pizzas = pizzaList.toArray(new Pizza[pizzaList.size()]);
+    
+    System.out.println("Printing out the array of pizzas for this order before adding them to the order object:");
+    for(int i = 0; i < pizzas.length; i++)
+    {
+        System.out.println(pizzas[i].toString());
+    }
+    
+    order.setPizzas(pizzas);
+    
     if(order.saveOrder())
       JOptionPane.showMessageDialog(null, "Order Placed");
   }
   
   
+  private static String[] getToppings()
+  {
+      //create toppings after you get the count of the num elements in temp array
+      //String[] toppings = null;
+      
+      
+      //String[] temp = new String[20];
+      //int numToppings = 0;
+      ArrayList<String> toppingsList = new ArrayList<String>();
+      
+      int option = (JOptionPane.showConfirmDialog(null, "Add toppings to your pizza?", "WARNING",
+        JOptionPane.YES_NO_OPTION));
+      
+      if(option == JOptionPane.YES_OPTION)
+      {
+          
+            do
+            {
+                String topping = (String) JOptionPane.showInputDialog(null, 
+                                                              "Add a topping:",
+                                                              "Input",
+                                                              JOptionPane.QUESTION_MESSAGE, 
+                                                              null, 
+                                                              Pizza.TOPPINGS, 
+                                                            Pizza.TOPPINGS[0]);
+
+                
+                toppingsList.add(topping);
+
+            }
+            while(JOptionPane.showConfirmDialog(null, "Add another topping?", "WARNING",
+              JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
+
+       }
+            
+      
+      String[] toppings = toppingsList.toArray(new String[toppingsList.size()]);
+      return toppings;
+  }
+  
+  
+  private static String getSauceType()
+  {
+      String sauce = (String) JOptionPane.showInputDialog(null, 
+                                                        "Choose a sauce:",
+                                                        "Input",
+                                                        JOptionPane.QUESTION_MESSAGE, 
+                                                        null, 
+                                                        Pizza.SAUCES, 
+                                                        Pizza.SAUCES[0]);
+      return sauce;
+  }
+  private static String getCrustType()
+  {
+      String crust = (String) JOptionPane.showInputDialog(null, 
+                                                        "Choose a crust:",
+                                                        "Input",
+                                                        JOptionPane.QUESTION_MESSAGE, 
+                                                        null, 
+                                                        Pizza.CRUSTS, 
+                                                        Pizza.CRUSTS[0]);
+      return crust;
+  }
+  
+  private static String getPizzaSize()
+  {
+      String size = (String) JOptionPane.showInputDialog(null, 
+                                                        "Choose a pizza size:",
+                                                        "Input",
+                                                        JOptionPane.QUESTION_MESSAGE, 
+                                                        null, 
+                                                        Pizza.SIZES, 
+                                                        Pizza.SIZES[0]);
+      return size;
+  }
   private static void writeToFile(File userFile, String userInfo)
   {
     PrintWriter writer = null; 

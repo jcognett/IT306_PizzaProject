@@ -55,6 +55,9 @@ public class Pizza
    * 
    * @exception Exception Throw an error that there was a pizza mistake 
    */
+  
+  public Pizza(){}
+  
   public Pizza(String size, String crust, String sauce, String[] toppings) throws Exception{
     if(Arrays.asList(SIZES).contains(size)){
       this.size = size;
@@ -83,6 +86,14 @@ public class Pizza
     else
       throw new Exception("Invalid Pizza");
   } 
+
+    public Pizza(String size, String crust, String sauce) {
+        this.size = size;
+        this.crust = crust;
+        this.sauce = sauce;
+    }
+  
+  
   
   /**
    * CalcCost method returns the cost of an individual pizza
@@ -93,13 +104,25 @@ public class Pizza
     cost += pMap.get(size);
     cost += cMap.get(crust);
     //Toppings are priced at 3.00 for 3-4 topppings, and 4.0 for 5+ toppings
-    if((toppings.length == 3) || (toppings.length == 4)){
-      cost += 3.0;
+    
+    if(toppings !=null)
+    {
+        if((toppings.length == 3) || (toppings.length == 4)){
+           cost += 3.0;
+        }
+        if (toppings.length > 4){
+          cost += 4.0;
+        }
     }
-    if (toppings.length > 4){
-      cost += 4.0;
-    }
+    
     return cost;
   }
+
+    @Override
+    public String toString() {
+        return "Pizza{" + "size=" + size + ", crust=" + crust + ", sauce=" + sauce + ", toppings=" + toppings + '}';
+    }
+  
+  
   
 }

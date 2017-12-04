@@ -22,11 +22,17 @@ public class Order
   private int numPizzas;
   private Pizza[] pizzas;
   
+  public Order()
+  {
+     ++orderID; 
+  }
+  
   public Order(int numPizzas) 
   {
-    this.orderID = orderID++;
+    this();
     this.numPizzas = numPizzas;
     this.pizzas = new Pizza[numPizzas];
+    
   }
   
   /**
@@ -35,13 +41,23 @@ public class Order
    */
   private double calculateCost()
   {
+    System.out.println("Entering calculateCost()\n numPizzas is " + numPizzas);
     double cost = 0.0;
-    for(int i=0; i<numPizzas; i++){
+    for(int i=0; i<numPizzas; i++)
+    {
+
+      //need to create the pizza
+      //currently causing a NullPointerException due to there being no pizzas in the array
+      //instead of starting the prompt with how many pizzas, should perform a "While answer = yes" loop
+        //continue to ask the user if they would like to add another pizza to the order
+     
       cost += pizzas[i].calcCost();
     }
     return cost;
   }
   
+  
+
   private void getPizzas() throws Exception{
     for(int i=0; i<numPizzas; i++){
       String size = JOptionPane.showInputDialog(null, "What size pizza will you be ordering? \n Options are: Kids, Small, Medium, Large, Party");
@@ -56,11 +72,29 @@ public class Order
       pizzas[i] = pizza;
     }
   }
+
+    public void setPizzas(Pizza[] pizzas) {
+        this.pizzas = pizzas;
+        this.numPizzas = pizzas.length;
+    }
+  
+  
   
   protected boolean saveOrder() throws Exception{
     //File IO
     File orderFile = new File(Order.ORDER_FILE);
     orderFile.createNewFile();
+    
+    System.out.println("Printing order information to save to file:\n\n");
+    System.out.println("orderID: " + orderID);
+    System.out.println("numPizzas: " + numPizzas);
+    System.out.println("[pizzas]: ");
+    for(int i = 0; i < pizzas.length; i++)
+    {
+        System.out.println(pizzas[i]);
+    }
+    System.out.println("calculateCost: " + Double.toString(calculateCost()));
+    
     
     boolean saved = false;
     String toSave = "";

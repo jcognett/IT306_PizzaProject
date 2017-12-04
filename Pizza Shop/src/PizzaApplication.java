@@ -221,7 +221,7 @@ public class PizzaApplication
           listOutstandingOrders();
           break;
         case 3:
-          //TODO
+          listOutstandingOrders();
           break;
         case 4:
           JOptionPane.showMessageDialog(null, "Logging you out...");

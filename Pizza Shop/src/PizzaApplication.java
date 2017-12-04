@@ -108,9 +108,8 @@ public class PizzaApplication
         userLine[i] = linescan.next();
         i++;
       }
-      if((email == userLine[8]) && (password == userLine[9])){
+      if((email.equals(userLine[8])) && (password.equals(userLine[9]))){
         authenticatedUserType = Integer.parseInt(userLine[0]);
-        break;
       }
     }
     return authenticatedUserType;
@@ -237,7 +236,7 @@ public class PizzaApplication
     String password = JOptionPane.showInputDialog(null, "Password:");
     
     
-    userInfo += accountType + ", " + firstName + ", " + lastName + ", " + streetAddress + ", " + city + ", " + state + ", " + zip + ", " + phone + ", " + email + ", " + password + "\n";
+    userInfo += accountType + "," + firstName + "," + lastName + "," + streetAddress + "," + city + "," + state + "," + zip + "," + phone + "," + email + "," + password + ",\n";
     writeToFile(userFile, userInfo);
     
     displayLogin(userFile);

@@ -33,24 +33,55 @@ public class PizzaApplication
   }
   
   /**
-   * The initial menu whiich asks the user to login, create a new account, or exit.
+   * The initial menu which asks the user to login, create a new account, or exit.
    * @param userFile the file that holds account information
    */
-  private static void initialMenu(File userFile) throws FileNotFoundException, Exception{
-    String menu = "1- Login\n2- Create New Account\n3- Exit";
-    int option = 0;
-    option = Integer.parseInt(JOptionPane.showInputDialog(menu));
-    switch(option){
-      case 1:
-        displayLogin(userFile);
-        break;
-      case 2:
-        promptForUserEntry(userFile);
-        break;
-      case 3:
-        JOptionPane.showMessageDialog(null, "Have a Nice Day!");
-        System.exit(0);
-    }
+  private static void initialMenu(File userFile) throws FileNotFoundException, Exception
+  {
+      
+      
+     /*
+      
+      String[] options = new String[]{"OK", "Exit"};
+     int option = JOptionPane.showOptionDialog(null, panel, "Login",
+                                              JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+                                              null, options, options[1]);
+      */
+      
+        String[] options = {"Login", "Create New Account","Exit" };
+        
+        //String menu = "1- Login\n2- Create New Account\n3- Exit";
+        //int option = 0;
+        //option = Integer.parseInt(JOptionPane.showInputDialog(menu));
+        
+        int option = JOptionPane.showOptionDialog(null, null, "Login",
+                                              JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+                                              null, options, options[0]);
+        System.out.println(option);
+        if(option == 0)
+        {
+//            switch(option){
+//            case 1:
+//              displayLogin(userFile);
+//              break;
+//            case 2:
+//              promptForUserEntry(userFile);
+//              break;
+//            case 3:
+//              JOptionPane.showMessageDialog(null, "Have a Nice Day!");
+//              System.exit(0);
+//          } 
+            displayLogin(userFile);
+        }
+        else if (option == 1)
+        {
+            promptForUserEntry(userFile);
+        }
+        else
+        {
+            System.exit(0);
+        }
+        
   }
   
   /**
@@ -73,31 +104,39 @@ public class PizzaApplication
     panel.add(emailInput);
     panel.add(passwordLabel);
     panel.add(pass);
-    String[] options = new String[]{"OK", "Cancel"};
+    String[] options = new String[]{"OK", "Exit"};
     int option = JOptionPane.showOptionDialog(null, panel, "Login",
                                               JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
-                                              null, options, options[1]);
+                                              null, options, options[0]);
+    System.out.println(option);
+    
     if(option == 0) // pressing OK button
     {
-      email = emailInput.getText();
-      password = charsToString(pass.getPassword());
-      //authenticatedType is the type of account labled from 1-4
-      authenticatedType = authenticateUser(userFile, email, password);
+        email = emailInput.getText();
+        password = charsToString(pass.getPassword());
+        //authenticatedType is the type of account labled from 1-4
+        authenticatedType = authenticateUser(userFile, email, password);
+
+        switch(authenticatedType){
+        case 0:
+          //If it is default, something went wrong and they need to try again
+          JOptionPane.showMessageDialog(null, "Invalid Credentials \n Please Try Again!");
+          displayLogin(userFile);
+        case 1:
+          displayCustomerMenu(userFile);
+        case 2:
+          displayEmployeeMenu(userFile);
+        case 3:
+          displayManagerMenu(userFile);
+        case 4:
+          displayDriverMenu(userFile);
+      }
     }
-    switch(authenticatedType){
-      case 0:
-        //If it is default, something went wrong and they need to try again
-        JOptionPane.showMessageDialog(null, "Invalid Credentials \n Please Try Again!");
-        displayLogin(userFile);
-      case 1:
-        displayCustomerMenu(userFile);
-      case 2:
-        displayEmployeeMenu(userFile);
-      case 3:
-        displayManagerMenu(userFile);
-      case 4:
-        displayDriverMenu(userFile);
+    else
+    {
+        System.exit(0);
     }
+    
   }
   
   /**
@@ -152,28 +191,63 @@ public class PizzaApplication
   private static void displayCustomerMenu(File userFile) throws Exception
   {
     //The customer's menu
-    String menu ="1- New Order\n2- Check My Orders\n3- Recent Order\n4- My Profile\n5- Logout";
-    int option = 0;
-    do{
-      option = Integer.parseInt(JOptionPane.showInputDialog(menu));
-      switch(option){
-        case 1:
-          makeOrder(userFile);
-          break;
-        case 2:
-          listOrders();
-          break;
-        case 3:
-          listRecentOrder();
-          break;
-        case 4:
-          myProfile(userFile);
-          break;
-        case 5:
-          JOptionPane.showMessageDialog(null, "Logging you out...");
-          displayLogin(userFile);
-      }
-    }while(true);
+//       String[] options = {"New Order", "Check My Orders","Recent Orders", "My Profile", "Logout" };
+//        
+//       
+//        
+//        int option = JOptionPane.showOptionDialog(null, null, "Customer Menu",
+//                                              JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+//                                              null, options, options[0]);
+//      
+//      
+//        switch(option)
+//        {
+//            case 0:
+//              makeOrder(userFile);
+//              break;
+//            case 1:
+//              listOrders();
+//              //displayCustomerMenu(userFile);
+//              break;
+//            case 2:
+//              listRecentOrder();
+//              break;
+//            case 3:
+//              myProfile(userFile);
+//              break;
+//            case 4:
+//              JOptionPane.showMessageDialog(null, "Logging you out...");
+//              displayLogin(userFile);
+//      }
+        
+        
+        
+        String menu ="1- New Order\n2- Check My Orders\n3- Recent Order\n4- My Profile\n5- Logout";
+        int option = 0;
+        do{
+            option = Integer.parseInt(JOptionPane.showInputDialog(menu));
+            
+            switch(option)
+            {
+                case 1:
+                  makeOrder(userFile);
+                  break;
+                case 2:
+                  listOrders();
+                  //displayCustomerMenu(userFile);
+                  break;
+                case 3:
+                  listRecentOrder();
+                  break;
+                case 4:
+                  myProfile(userFile);
+                  break;
+                case 5:
+                  JOptionPane.showMessageDialog(null, "Logging you out...");
+                  displayLogin(userFile);
+            }
+            
+        }while(true);
   }
   
   /**
@@ -182,6 +256,7 @@ public class PizzaApplication
    */
   private static void displayEmployeeMenu(File userFile) throws Exception
   {
+    System.out.println("Entering displayEmployeeMenu");
     String menu ="1- New Order\n2- Check My Orders\n3- Recent Order\n4- Logout";
     int option = 0;
     do{
@@ -280,7 +355,7 @@ public class PizzaApplication
     String city = JOptionPane.showInputDialog(null,"City: ");
     String state = (String) JOptionPane.showInputDialog(null, 
                                                         "State:",
-                                                        "Input",
+                                                        "Create New User",
                                                         JOptionPane.QUESTION_MESSAGE, 
                                                         null, 
                                                         PizzaApplication.STATES, 
@@ -312,7 +387,7 @@ public class PizzaApplication
     String city = JOptionPane.showInputDialog(null,"City: ");
     String state = (String) JOptionPane.showInputDialog(null, 
                                                         "State:",
-                                                        "Input",
+                                                        "State input for Manager",
                                                         JOptionPane.QUESTION_MESSAGE, 
                                                         null, 
                                                         PizzaApplication.STATES, 
@@ -417,7 +492,7 @@ public class PizzaApplication
       {
         String topping = (String) JOptionPane.showInputDialog(null, 
                                                               "Add a topping:",
-                                                              "Input",
+                                                              "Toppings",
                                                               JOptionPane.QUESTION_MESSAGE, 
                                                               null, 
                                                               Pizza.TOPPINGS, 
@@ -442,7 +517,7 @@ public class PizzaApplication
   {
     String sauce = (String) JOptionPane.showInputDialog(null, 
                                                         "Choose a sauce:",
-                                                        "Input",
+                                                        "Sauce",
                                                         JOptionPane.QUESTION_MESSAGE, 
                                                         null, 
                                                         Pizza.SAUCES, 
@@ -453,7 +528,7 @@ public class PizzaApplication
   {
     String crust = (String) JOptionPane.showInputDialog(null, 
                                                         "Choose a crust:",
-                                                        "Input",
+                                                        "Crust",
                                                         JOptionPane.QUESTION_MESSAGE, 
                                                         null, 
                                                         Pizza.CRUSTS, 
@@ -465,7 +540,7 @@ public class PizzaApplication
   {
     String size = (String) JOptionPane.showInputDialog(null, 
                                                        "Choose a pizza size:",
-                                                       "Input",
+                                                       "Size",
                                                        JOptionPane.QUESTION_MESSAGE, 
                                                        null, 
                                                        Pizza.SIZES, 
@@ -610,47 +685,55 @@ public class PizzaApplication
     }
     
     //Shows the user their current information and asks which needs updating
-    int change = Integer.parseInt(JOptionPane.showInputDialog(null, profile +"Or type 10 to cancel \r\n" + "Please type the number of what you wish to update"));
-    switch(change){
-      case 1:
-        update = JOptionPane.showInputDialog(null, "Please type your changes");
-        currentUser[1] = update;
-        break;
-      case 2:
-        update = JOptionPane.showInputDialog(null, "Please type your changes");
-        currentUser[2] = update;
-        break;
-      case 3:
-        update = JOptionPane.showInputDialog(null, "Please type your changes");
-        currentUser[3] = update;
-        break;
-      case 4:
-        update = JOptionPane.showInputDialog(null, "Please type your changes");
-        currentUser[4] = update;
-        break;
-      case 5:
-        update = JOptionPane.showInputDialog(null, "Please type your changes");
-        currentUser[5] = update;
-        break;
-      case 6:
-        update = JOptionPane.showInputDialog(null, "Please type your changes");
-        currentUser[6] = update;
-        break;
-      case 7:
-        update = JOptionPane.showInputDialog(null, "Please type your changes");
-        currentUser[7] = update;
-        break;
-      case 8:
-        update = JOptionPane.showInputDialog(null, "Please type your changes");
-        currentUser[8] = update;
-        break;
-      case 9:
-        update = JOptionPane.showInputDialog(null, "Please type your changes");
-        currentUser[9] = update;
-        break;
-      case 10:
-        break;
+    try
+    {
+        int change = Integer.parseInt(JOptionPane.showInputDialog(null, "Please type the number of what you wish to update"  + profile));
+        switch(change){
+          case 1:
+            update = JOptionPane.showInputDialog(null, "Please type your changes");
+            currentUser[1] = update;
+            break;
+          case 2:
+            update = JOptionPane.showInputDialog(null, "Please type your changes");
+            currentUser[2] = update;
+            break;
+          case 3:
+            update = JOptionPane.showInputDialog(null, "Please type your changes");
+            currentUser[3] = update;
+            break;
+          case 4:
+            update = JOptionPane.showInputDialog(null, "Please type your changes");
+            currentUser[4] = update;
+            break;
+          case 5:
+            update = JOptionPane.showInputDialog(null, "Please type your changes");
+            currentUser[5] = update;
+            break;
+          case 6:
+            update = JOptionPane.showInputDialog(null, "Please type your changes");
+            currentUser[6] = update;
+            break;
+          case 7:
+            update = JOptionPane.showInputDialog(null, "Please type your changes");
+            currentUser[7] = update;
+            break;
+          case 8:
+            update = JOptionPane.showInputDialog(null, "Please type your changes");
+            currentUser[8] = update;
+            break;
+          case 9:
+            update = JOptionPane.showInputDialog(null, "Please type your changes");
+            currentUser[9] = update;
+            break;
+          case 10:
+            break;
+        } 
     }
+    catch (NumberFormatException e)
+    {
+        //handle exception
+    }
+    
     
     String toSave = currentUser[0] + ",";
     for(int i=1; i<currentUser.length; i++){

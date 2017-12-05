@@ -161,6 +161,7 @@ public class PizzaApplication
    */
   private static int authenticateUser(File userFile, String email, String password) throws FileNotFoundException
   {
+      System.out.println("Entering authenticate user method");
     int authenticatedUserType = 0;
     String[] userLine = new String[10];
     
@@ -178,6 +179,13 @@ public class PizzaApplication
       }
       //Authentication check
       if((email.equals(userLine[8])) && (password.equals(userLine[9]))){
+        System.out.println("found a match, printing userinfo that sould be in currentuser");
+        for(int j = 0; j< currentUser.length; j++)
+        {
+            System.out.println(userLine[j]);
+            currentUser[j] = userLine[j];
+            
+        }
         authenticatedUserType = Integer.parseInt(userLine[0]);
       }
     }
@@ -692,6 +700,12 @@ public class PizzaApplication
     String profile = "";
     String update = "";
     
+    System.out.println("Printing currentUser in myProfile method");
+    for(int i = 0; i < currentUser.length; i++)
+    {
+      System.out.println(currentUser[i]);
+    }
+
     for(int i=1; i<currentUser.length; i++){
       profile += i +": " + currentUser[i] + "\r\n";
     }
@@ -699,7 +713,8 @@ public class PizzaApplication
     //Shows the user their current information and asks which needs updating
     try
     {
-        int change = Integer.parseInt(JOptionPane.showInputDialog(null, "Please type the number of what you wish to update"  + profile));
+        int change = Integer.parseInt(JOptionPane.showInputDialog(null, "Please type the number of what you wish to update"
+                + "\n\n"  + profile + "\n\nor press 10 to cancel"));
         switch(change){
           case 1:
             update = JOptionPane.showInputDialog(null, "Please type your changes");

@@ -3,4 +3,5 @@
 4,Joe,Driver,55 Example Way,Fairfax,VA,22030,123-456-9876,employee@example.com,pass,
 4,Bob,Driver,4450 Patriot Circle,Fairfax,VA,22030,123-456-7777,jdriver@gmu.edu,pword,
 2,Bob,Emp,4450 Patriot Circle,Fairfax,VA,22030,123-456-7777,employee,fthis,
-null,,,,,VA,,,,,
+1,john,c,null,null,null,null,123,null,null,
+1,dfg,dfg,fghfgh,fghfgh,VA,22030,123-456-9876,sdgf,dfg,

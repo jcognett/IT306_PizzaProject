@@ -350,7 +350,10 @@ public class PizzaApplication
     String accountType = "1";
     String firstName = JOptionPane.showInputDialog(null,"First Name: ");
     String lastName = JOptionPane.showInputDialog(null,"Last Name: ");
-    String phone = JOptionPane.showInputDialog(null,"Phone Number: ");
+    String phone = JOptionPane.showInputDialog(null,"Phone Number(Formatted as XXX-XXX-XXXX): ");
+    while(validPhone(phone) == false){
+      phone = JOptionPane.showInputDialog(null,"Phone Number(Formatted as XXX-XXX-XXXX): ");
+    }
     String streetAddress = JOptionPane.showInputDialog(null,"Street Address: ");
     String city = JOptionPane.showInputDialog(null,"City: ");
     String state = (String) JOptionPane.showInputDialog(null, 
@@ -361,7 +364,10 @@ public class PizzaApplication
                                                         PizzaApplication.STATES, 
                                                         PizzaApplication.STATES[2]);
     
-    String zip = JOptionPane.showInputDialog(null,"Zip Code: ");
+    String zip = JOptionPane.showInputDialog(null,"ZIP Code: ");
+    while(validZip(zip) == false){
+      zip = JOptionPane.showInputDialog(null,"ZIP Code: ");
+    }
     String email = JOptionPane.showInputDialog(null,"Email Address: ");
     String password = JOptionPane.showInputDialog(null, "Password:");
     
@@ -383,6 +389,9 @@ public class PizzaApplication
     String firstName = JOptionPane.showInputDialog(null,"First Name: ");
     String lastName = JOptionPane.showInputDialog(null,"Last Name: ");
     String phone = JOptionPane.showInputDialog(null,"Phone Number: ");
+    while(validPhone(phone) == false){
+      phone = JOptionPane.showInputDialog(null,"Phone Number(Formatted as XXX-XXX-XXXX): ");
+    }
     String streetAddress = JOptionPane.showInputDialog(null,"Street Address: ");
     String city = JOptionPane.showInputDialog(null,"City: ");
     String state = (String) JOptionPane.showInputDialog(null, 
@@ -393,7 +402,10 @@ public class PizzaApplication
                                                         PizzaApplication.STATES, 
                                                         PizzaApplication.STATES[2]);
     
-    String zip = JOptionPane.showInputDialog(null,"Zip Code: ");
+    String zip = JOptionPane.showInputDialog(null,"ZIP Code: ");
+    while(validZip(zip) == false){
+      zip = JOptionPane.showInputDialog(null,"ZIP Code: ");
+    }
     String email = JOptionPane.showInputDialog(null,"Email Address: ");
     String password = JOptionPane.showInputDialog(null, "Password:");
     
@@ -743,6 +755,32 @@ public class PizzaApplication
     //Saves the changes
     writeToFile(userFile, toSave);
     
+  }
+  
+  
+  /**
+   * Helper method to validate phone number
+   * @param number phone number to be checked
+   */
+  private static boolean validPhone(String number){
+    boolean isval = false;
+    String regex = "^[0-9\\-]*$";
+    if((number.matches(regex)) && (number.length() == 12)){
+      isval = true;
+    }
+    return isval;
+  }
+  
+  /**
+   * Helper method to validate zip code
+   * @param number zip code to be checked
+   */
+  private static boolean validZip(String number){
+    boolean isval = false;
+    if((number.matches("^[0-9]*$")) && (number.length() == 5)){
+      isval = true;
+    }
+    return isval;
   }
   
   /**
